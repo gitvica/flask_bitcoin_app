@@ -4,6 +4,11 @@ import requests
 app = Flask(__name__)
 app.secret_key = "your_secret_key"  # Replace with a real secret in production
 
+users = {
+    "admin": "password123",
+    "vic": "letmein"
+}
+
 def fetch_bitcoin_price():
     url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
     response = requests.get(url)
@@ -15,7 +20,7 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        if username == "admin" and password == "password":
+        if username in users and users[username] == password:
             session["user"] = username
             return redirect(url_for("index"))
         else:
